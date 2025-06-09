@@ -111,11 +111,60 @@ def busqueda_binaria(id_buscado):
         else:
             izquierda = medio + 1
     return None, None
+
+def recorrido_inorden(lista_de_nodos):
+    """
+    Recorre el árbol en orden (in-orden): hijo izquierdo -> raíz -> hijo derecho.
+    Útil para estructuras binarias cuando se quiere un recorrido ordenado.
+    """
+    if lista_de_nodos is None or lista_de_nodos == []:
+        return
+
+    if len(lista_de_nodos) > 1:
+        recorrido_inorden(lista_de_nodos[1])  # Recorre hijo izquierdo
+
+    print(lista_de_nodos[0])                  # Visita la raíz (nodo actual)
+
+    if len(lista_de_nodos) > 2:
+        recorrido_inorden(lista_de_nodos[2])  # Recorre hijo derecho
+
+def recorrido_preorden(lista_de_nodos):
+    """
+    Recorre el árbol en pre-orden: raíz -> hijo izquierdo -> hijo derecho.
+    Útil para clonar o copiar la estructura del árbol.
+    """
+    if lista_de_nodos is None or lista_de_nodos == []:
+        return
+
+    print(lista_de_nodos[0])                  # Visita la raíz (nodo actual)
+
+    if len(lista_de_nodos) > 1:
+        recorrido_preorden(lista_de_nodos[1]) # Recorre hijo izquierdo
+
+    if len(lista_de_nodos) > 2:
+        recorrido_preorden(lista_de_nodos[2]) # Recorre hijo derecho
+
+def recorrido_postorden(lista_de_nodos):
+    """
+    Recorre el árbol en post-orden: hijo izquierdo -> hijo derecho -> raíz.
+    Útil para eliminar o evaluar estructuras completas desde las hojas hacia la raíz.
+    """
+    if lista_de_nodos is None or lista_de_nodos == []:
+        return
+
+    if len(lista_de_nodos) > 1:
+        recorrido_postorden(lista_de_nodos[1]) # Recorre hijo izquierdo
+
+    if len(lista_de_nodos) > 2:
+        recorrido_postorden(lista_de_nodos[2]) # Recorre hijo derecho
+
+    print(lista_de_nodos[0])                   # Visita la raíz (nodo actual)
+
 #endregion
 
 #region Programa Principal
 print("Bienvenido profesor. Por favor, ingrese la acción que desea realizar:")
-print("1. Ver jerarquía total de aulas. \n2. Buscar elemento y ver su profundidad. \n3. Buscar alumno.\n0. Salir.")
+print("1. Ver jerarquía total de aulas. \n2. Buscar elemento y ver su profundidad. \n3. Buscar alumno. \n4. Recorridos del árbol (in-orden, pre-orden, post-orden).\n0. Salir.")
 opcion = -1 #Inicializo variable para que el while arranque
 while opcion != "0":
     opcion = input() 
@@ -154,10 +203,20 @@ while opcion != "0":
         else:
             print("No existe el ID de alumno ingresado en la base de datos.")
         break
+    elif (opcion == "4"):
+        limpiar_pantalla()
+        print("Recorrido in-orden:")
+        recorrido_inorden(provincia_lista)
+        print("\nRecorrido pre-orden:")
+        recorrido_preorden(provincia_lista)
+        print("\nRecorrido post-orden:")
+        recorrido_postorden(provincia_lista)
+        break
+    elif (opcion == "0"):
+        continue
     else:
         limpiar_pantalla()
         print("Ingrese una opción válida.")
         print("1. Ver jerarquía total de aulas. \n2. Buscar elemento y ver su profundidad. \n3. Buscar alumno.\n0. Salir.")
 print(f"\nOpción {opcion} completada. Hasta luego!\n")
 #endregion
-
