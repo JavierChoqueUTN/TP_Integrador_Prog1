@@ -1,4 +1,16 @@
 #region Listas
+alumnos_lista = {
+    5: "Arnez",
+    2: "Ramirez",
+    8: "Choque",
+    1: "Gonzalez",
+    6: "Gutierrez",
+    4: "Lopez",
+    9: "Campana",
+    3: "Martinez",
+    7: "Chiavon"
+}
+
 aula1_lista = ["Aula 1", [], []]
 aula2_lista = ["Aula 2", [], []]
 aula3_lista = ["Aula 3", [], []]
@@ -70,11 +82,40 @@ def buscar_elemento(lista_de_nodos, valor_buscado, camino=None):
 
     return None                              # En caso de que no se haya encontrado al "valor_buscado", entonces se retornara "None" al usuario.
 
+def busqueda_lineal(id_buscado):
+    tiempo_inicial = time.time()
+    for clave, valor in alumnos_lista.items():
+        if clave == id_buscado:
+            tiempo_final = time.time()
+            duracion_busqueda_lineal = (tiempo_final - tiempo_inicial) * 1000
+            return valor, duracion_busqueda_lineal
+    return None, None
+
+def busqueda_binaria(id_buscado):
+    # Convertimos a una lista de tuplas ordenadas por clave
+    items_ordenados = sorted(alumnos_lista.items())  # [(1, "Gonzalez"), (2, "Ramirez"), ...]
+    izquierda = 0
+    derecha = len(items_ordenados) - 1
+
+    tiempo_inicial = time.time()
+    while izquierda <= derecha:
+        medio = (izquierda + derecha) // 2
+        clave_medio, valor_medio = items_ordenados[medio]
+
+        if clave_medio == id_buscado:
+            tiempo_final = time.time()
+            duracion_busqueda_binaria = (tiempo_final - tiempo_inicial) * 1000
+            return valor_medio, duracion_busqueda_binaria
+        elif id_buscado < clave_medio:
+            derecha = medio - 1
+        else:
+            izquierda = medio + 1
+    return None, None
 #endregion
 
 #region Programa Principal
 print("Bienvenido profesor. Por favor, ingrese la acción que desea realizar:")
-print("1. Ver jerarquía total de aulas. \n2. Buscar elemento y ver su profundidad. \n3. Ingresar alumnos a un aula existente.\n0. Salir.")
+print("1. Ver jerarquía total de aulas. \n2. Buscar elemento y ver su profundidad. \n3. Buscar alumno.\n0. Salir.")
 opcion = -1 #Inicializo variable para que el while arranque
 while opcion != "0":
     opcion = input() 
@@ -100,10 +141,23 @@ while opcion != "0":
             print("No se encontró elemento.")
 #            print(f"\nOpción {opcion} completada. Hasta luego!")
         break
+
+    elif (opcion == "3"):
+        limpiar_pantalla()
+        id_buscado = int(input("Ingrese ID del alumno a buscar:"))
+        apellido_encontrado, duracion_busqueda_lineal = busqueda_lineal(id_buscado)
+        apellido_encontrado, duracion_busqueda_binaria = busqueda_binaria(id_buscado)
+        if apellido_encontrado is not None:
+            print(f"ID : {id_buscado} corresponde a alumno {apellido_encontrado}.")
+            print(f"Duración realizando busqueda lineal: {duracion_busqueda_lineal} milisegundos.")
+            print(f"Duración realizando busqueda binaria: {duracion_busqueda_binaria} milisegundos.")
+        else:
+            print("No existe el ID de alumno ingresado en la base de datos.")
+        break
     else:
         limpiar_pantalla()
         print("Ingrese una opción válida.")
-        print("1. Ver jerarquía total de aulas. \n2. Buscar elemento y ver su profundidad. \n3. Ingresar alumnos a un aula existente.")
+        print("1. Ver jerarquía total de aulas. \n2. Buscar elemento y ver su profundidad. \n3. Buscar alumno.\n0. Salir.")
 print(f"\nOpción {opcion} completada. Hasta luego!\n")
 #endregion
 
